@@ -1,2 +1,11 @@
 streamlit
 openai
+crewai
+crewai-tools
+google-generativeai
+fastapi
+serpapi
+pandas
+scikit-learn
+pysqlite3-binary
+python-dotenv

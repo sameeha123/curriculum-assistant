@@ -1,0 +1,35 @@
+curriculum_structure:
+  description: >
+    Identify structure for {subject} curriculum at {grade_level}
+    for {duration}. Goals: {learning_goals}
+    Teaching styles: {teaching_styles}
+  expected_output: >
+    A structured outline of the curriculum with topics/modules.
+
+curriculum_personalization:
+  description: >
+    Personalize the identified structure considering:
+    Subject: {subject}
+    Grade Level: {grade_level}
+    Teaching Styles: {teaching_styles}
+    Learning Goals: {learning_goals}
+  expected_output: >
+    Customized curriculum aligned with learner needs and context.
+
+curriculum_communication:
+  description: >
+    Transform the personalized curriculum into a clear format.
+    Consider grade level: {grade_level}
+    And teaching styles: {teaching_styles}
+  expected_output: >
+    Final polished curriculum in plain text form, ready for presentation.
+
+curriculum_finalization:
+  description: >
+    Review and finalize the curriculum ensuring:
+    - Alignment with {learning_goals}
+    - Grade-appropriate for {grade_level}
+    - Fits within {duration}
+    - Incorporates {teaching_styles}
+  expected_output: >
+    A complete, reviewed curriculum plan ready for implementation.
