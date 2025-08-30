@@ -29,17 +29,22 @@ vertex_ai_json = json.dumps(dict(service_account_info))
 os.environ['GOOGLE_GENAI_USE_VERTEXAI'] = "True"
 genai.configure(api_key=GEMINI_API_KEY)
 
-gemini_llm = LLM(
-    model='vertex_ai/gemini-2.5-pro',
-    api_key=GEMINI_API_KEY,
-    temperature=0.0 , # Lower temperature for more consistent results.
-    vertex_credentials=vertex_ai_json
-)
+def get_llm(model_name: str = 'vertex_ai/gemini-2.5-pro') -> LLM:
+    return LLM(
+        model=f'vertex_ai/{model_name}',
+        api_key=GEMINI_API_KEY,
+        temperature=0.0,
+        vertex_credentials=vertex_ai_json
+    )
 
 serp_api_tool = SerpApiGoogleSearchTool()
 
 @CrewBase
 class CurriculumPlannerCrew:
+    def __init__(self, model_name: str = 'gemini-2.5-pro'):
+        self.llm = get_llm(model_name)
+        super().__init__()
+
     agents_config = 'config/agents.yaml'
     tasks_config = 'config/tasks.yaml'
     
@@ -48,7 +53,7 @@ class CurriculumPlannerCrew:
         return Agent(
             config=self.agents_config['orchestrator'],
             verbose=True,
-            llm=gemini_llm
+            llm=self.llm
         )
     
     @agent
@@ -56,7 +61,7 @@ class CurriculumPlannerCrew:
         return Agent(
             config=self.agents_config['curriculum_identifier'],
             verbose=True,
-            llm=gemini_llm,
+            llm=self.llm,
             tools=[serp_api_tool]
         )
     
@@ -65,7 +70,7 @@ class CurriculumPlannerCrew:
         return Agent(
             config=self.agents_config['curriculum_personalizer'],
             verbose=True,
-            llm=gemini_llm
+            llm=self.llm
         )
 
     @agent
@@ -73,7 +78,7 @@ class CurriculumPlannerCrew:
         return Agent(
             config=self.agents_config['curriculum_communicator'],
             verbose=True,
-            llm=gemini_llm
+            llm=self.llm
         )
 
     @task

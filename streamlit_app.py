@@ -12,7 +12,48 @@ hide_streamlit_style = """
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
+# Add Gemini model details
+GEMINI_MODELS = {
+    "gemini-1.0-pro": {
+        "Context Window": "32k tokens",
+        "Input Cost": "$0.00025/1k tokens",
+        "Output Cost": "$0.0005/1k tokens",
+        "Best For": "General purpose, balanced performance"
+    },
+    "gemini-1.0-pro-vision": {
+        "Context Window": "16k tokens",
+        "Input Cost": "$0.00025/1k tokens",
+        "Output Cost": "$0.0005/1k tokens",
+        "Best For": "Image understanding and analysis"
+    },
+    "gemini-2.5-pro": {
+        "Context Window": "128k tokens",
+        "Input Cost": "$0.0005/1k tokens",
+        "Output Cost": "$0.0005/1k tokens",
+        "Best For": "Advanced reasoning, longer context"
+    }
+}
+
 st.title("📚 Curriculum Planning Assistant")
+
+# Model Selection and Comparison
+with st.expander("Model Settings & Comparison", expanded=False):
+    selected_model = st.selectbox(
+        "Select Gemini Model",
+        options=list(GEMINI_MODELS.keys()),
+        index=2  # Default to gemini-2.5-pro
+    )
+    
+    # Create comparison table
+    st.markdown("### Model Comparison")
+    comparison_table = "| Model | Context Window | Input Cost | Output Cost | Best For |\n"
+    comparison_table += "|-------|----------------|------------|-------------|----------|\n"
+    
+    for model, details in GEMINI_MODELS.items():
+        comparison_table += f"| {model} | {details['Context Window']} | {details['Input Cost']} | {details['Output Cost']} | {details['Best For']} |\n"
+    
+    st.markdown(comparison_table)
+
 st.write("Welcome! Enter your curriculum planning requirements below. Our AI system will help create a personalized curriculum plan based on your needs.")
 
 with st.form("curriculum_form"):
@@ -37,7 +78,8 @@ if submit and subject and grade:
         "grade_level": grade,
         "duration": duration,
         "teaching_styles": styles,
-        "learning_goals": goals.strip()
+        "learning_goals": goals.strip(),
+        "model": selected_model  # Add selected model to user input
     }
     with st.spinner("Generating your personalized curriculum plan..."):
         crew_instance = CurriculumPlannerCrew()
