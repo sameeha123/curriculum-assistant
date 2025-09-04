@@ -60,7 +60,7 @@ with st.form("curriculum_form"):
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        subject = st.selectbox("Subject", ["Mathematics", "Science", "History", "Computer Science"])
+        subject = st.selectbox("Subject", ["Mathematics", "Science", "History", "Computer Science","Others"])
         duration = st.text_input("Duration", "8 weeks")
     with col2:
         grade = st.selectbox("Grade Level", ["Grade 3", "Middle School", "High School", "Undergraduate"])
